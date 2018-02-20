@@ -1,0 +1,217 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: myApp1.0
+  description: my Application 1.0
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+  - name: Products
+    description: Simple products endpoints
+  - name: Countries
+    description: Simple countries endpoints
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/x-www-form-urlencoded
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The example name
+  ProductsBody:
+    type: object
+    title: products
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The products name
+  CountriesBody:
+    type: object
+    title: countries
+    required:
+      - name
+      - sortname
+    properties:
+      name:
+        type: string
+        description: The countries name
+      sortname:
+        type: string
+        description: The countries sortname
+
+paths:
+  /examples:
+    get:
+      tags:
+        - Examples
+      description: Fetch all examples
+      responses:
+        200:
+          description: Returns all examples
+    post:
+      tags:
+        - Examples
+      description: Create a new example
+      parameters:
+        - name: example
+          in: body
+          description: number of items to skip
+          required: true
+          schema: 
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Returns all examples
+
+  /examples/{id}:
+    get:
+      tags:
+        - Examples
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the example with the specified id
+        404:
+          description: Example not 
+
+  /products:
+    get:
+      tags:
+        - Products
+      description: Fetch all products
+      parameters:
+        - name: offset
+          in: query
+          required: true
+          description: The offset of the pagination
+          type: integer
+        - name: limit
+          in: query
+          required: true
+          description: The limit of the pagination
+          type: integer
+      responses:
+        200:
+          description: "successful operation"
+      #security:
+      #- api_key: []
+    post:
+      tags:
+        - Products
+      description: Create a new example
+      parameters:
+        - name: example
+          in: body
+          description: number of items to skip
+          required: true
+          schema: 
+            $ref: "#/definitions/ProductsBody"
+      responses:
+        200:
+          description: Returns all products
+      security:
+      - api_key: []
+  
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the products with the specified id
+        404:
+          description: Products not
+      security:
+      - api_key: []
+   
+  /countries:
+    get:
+      tags:
+        - Countries
+      description: Fetch all countries
+      parameters:
+        - name: token
+          in: header
+          required: false
+          description: The header token
+          type: string
+        - name: offset
+          in: query
+          required: false
+          description: The offset of the pagination
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          description: The limit of the pagination
+          type: integer
+      responses:
+        200:
+          description: "successful operation"
+      #security:
+      #- api_key: []
+    post:
+      tags:
+        - Countries
+      description: Create a new Country
+      parameters:
+        - name: token
+          in: header
+          required: false
+          description: The header token
+          type: string
+        - name: country
+          in: body
+          description: number of items to skip
+          required: true
+          schema: 
+            $ref: "#/definitions/CountriesBody"
+      responses:
+        200:
+          description: Create Country
+  #    security:
+  #    - api_key: []
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
+securityDefinitions:
+  #petstore_auth:
+  #  type: "oauth2"
+  #  authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+  #  flow: "implicit"
+  #  scopes:
+  #    write:pets: "modify pets in your account"
+  #    read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
